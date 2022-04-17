@@ -87,7 +87,7 @@ define( "mu_root_dir" , "./" ); //relative path, by default "./"
 <table class="tab-row">
 <tr>
 <td class="logo"><a href="<?php echo mu_website;?>" target="_blank"><svg class="svg-ic"><use xlink:href="#ic-logo" /></svg></a></td>
-<td class="title"><?php echo mu_title_html;?> <a title="License" rel="license" target="_blank" href="<?php echo licensePage().getPrevQuery("_srv","&");?>" class="learnmore">Version <?php echo mu_version;?></a></td>
+<td class="title"><?php echo mu_title_html;?> <a title="License" rel="license" target="_blank" href="<?php echo licensePage().getPrevQuery("_srv","&");?>" class="learnmore">Muon <?php echo mu_version;?></a></td>
 <td class="sep">&nbsp;</td>
 <td class="btns">
 <?php if(!muonInterface("login")){?><a title="Show Tree" onclick="tree_visibility('open')" class="btn tree-open-btn"><svg class="svg-ic"><use xlink:href="#ic-list" /></svg></a><?php }?>
