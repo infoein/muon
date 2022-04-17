@@ -4,6 +4,8 @@
 
 *You don't need to install any boring app to manage your web space!*
 
+[!Image](https://raw.githubusercontent.com/infoein/muon/gh-pages/muon-editupload.png)
+
 Muon works as a web-app and its simple, fast loading and responsive interface is optimized for modern browsers for desktops, tablets and smartphones.
 
 
