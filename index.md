@@ -1,37 +1,17 @@
 ## Muon file manager
 
-You can use the [editor on GitHub](https://github.com/infoein/muon/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Muon is a powerful and lightweight open source PHP/JavaScript-based file manager for your web space released under the MIT license.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Features
+- *You don't need to install any boring app to manage your web space*: Muon works as a web-app and its simple, fast loading and responsive interface is optimized for modern browsers for desktops, tablets and smartphones;
+- *A stand-alone 94kB file*: Muon's code is compressed in a single 94kB page and it's ready to work out-of-the-box. No external resources are used (not even fonts or pictures);
+- *No database required*: Muon allows a single user access, so a database would be a useless waste of resources. All settings are stored at the beginning of the file, and (of course) hidden to visitors;
+- Fully open source - released under the MIT License.
 
-### Markdown
+## Functionalities
+- Browse folders, display sizes, permission and tree structure;
+- Move, copy, delete, rename your files and create new ones;
+- Zip/unzip archives (requires PHP-Zip extension on your server);
+- Upload multiple files, according to server's limitations;
+- *Built-in text editor* - This simple tool is one of the most helpful to manage your site's pages (HTML, PHP), scripts (JS) and stylesheets (CSS).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/infoein/muon/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
