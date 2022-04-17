@@ -17,7 +17,7 @@ Muon is a powerful and lightweight open source PHP/JavaScript-based file manager
 - *Built-in text editor* - This simple tool is one of the most helpful to manage your site's pages (HTML, PHP), scripts (JS) and stylesheets (CSS).
 
 
-## Install instructions
+## Installation notes
 The only file required to use Muon is ***muon.php***. You need first to edit its settings as explained below, then upload it to your web space; it will start working immediately asking you to log-in. You can place it anywhere and eventually rename it, but you will be able to manage only that folder and its subdirectories, unless you specify a different root path (check *mu_root_dir* option).
 
 To change settings, define PHP constants at the beginning of the file this way:
