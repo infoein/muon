@@ -1,4 +1,4 @@
-# Muon file manager (version 3.2)
+# Muon file manager (version 3.3)
 Muon is a powerful and lightweight open source PHP/JavaScript-based file manager for your web space released under the MIT license.
 
 
