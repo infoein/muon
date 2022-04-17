@@ -47,7 +47,7 @@ Alternatively, you can copy [this code](https://raw.githubusercontent.com/infoei
 
 ### Notes
 
-This is an open source software released under the MIT license. By downloading Muon you automatically agree with its terms and conditions, which are stated here.
+This is an open source software released under the MIT license. By downloading Muon you automatically agree with its terms and conditions, which are stated [here](https://raw.githubusercontent.com/infoein/muon/main/LICENSE).
 
 
 **Muon is a proud [European](http://europa.eu/) software**
