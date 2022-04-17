@@ -14,11 +14,11 @@ Muon works as a web-app and its simple, fast loading and responsive interface is
 
 *What else should a file manager do?*
 
-- Browse folders, display sizes, permission and tree structure.
-- Move, copy, delete, rename your files and create new ones.
-- Zip/unzip archives — this requires PHP-Zip extension on your server.
-- Upload multiple files, according to server's limitations.
-- Built-in text editor; yeah, Muon can edit text files too! This tool is one of the most helpful to manage your site's pages (php, html), scripts (js) and stylesheets (css).
+- **Browse** folders, display sizes, permission and tree structure.
+- **Move, copy, delete, rename** your files and **create new ones**.
+- **Zip/unzip** archives — this requires PHP-Zip extension on your server.
+- **Upload** multiple files, according to server's limitations.
+- **Built-in text editor**; yeah, Muon can edit text files too! This tool is one of the most helpful to manage your site's pages (HTML, PHP), scripts (JS) and stylesheets (CSS).
 
 ![Image](https://raw.githubusercontent.com/infoein/muon/gh-pages/muon-editupload.png)
 
