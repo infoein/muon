@@ -36,8 +36,10 @@ To change settings, define PHP constants at the beginning of the file this way:
 - ``mu_guest_session`` and ``mu_guest_can_read`` - These two are boolean options, which means they can be **true** or **false** (whitout quotation marks). The first one means that the user is a guest and can't edit files and folders but just browse them. The second one means that guests can open editor and read (but not save, of course) files. Default: both **false**;
 - ``mu_root_dir`` - By default, Muon works in the folder where you place it and in all its subfolders. If you want to make it work somewhere else, please type the relative path to the desired root directory. Please, note that all its subfolders will be accessible as well.
 
+## Source code
+Muon's source code is available in the *source-code* folder. All files located there are not required, but they're useful if you want to make your own modifications to the file manager. A PHP/HTML script - *MUON_ASSEMBLER.php* - is also provided to help you merging the whole code in a single file.
 
 ## License
 Muon is a open-source software release by InfoEin under the MIT License. Check *LICENSE* for additional information.
 
-*Muon is a proud European software.*
+**Muon is a proud [European](http://europa.eu/) software.**
