@@ -2,6 +2,7 @@
 
 Muon is a powerful and lightweight open source PHP/JavaScript-based file manager for your web space released under the MIT license. 
 
+Muon's presentation and demo: [Muon on GitHub Pages](https://infoein.github.io/muon/)
 
 
 ## Features
@@ -54,6 +55,3 @@ Muon is a open-source software release by InfoEin under the MIT License. Check *
 
 **Muon is a proud [European](http://europa.eu/) software.**
 
-
-
-[Muon on GitHub Pages](https://infoein.github.io/muon/)
