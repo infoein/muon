@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+    <!-- Head -->
+    <head>
+        <meta charset="utf-8">
+        <!-- Title and meta -->
+        <title>Muon file manager</title> 
+        <link rel="apple-touch-icon" href="muon-touch.png" />
+		<link rel="icon" href="muon-fav.png" />
+		<meta name="description" content="A powerful and lightweight open source PHP/JavaScript-based file manager for your web space." /> 
+        <!-- Style -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+        <style type="text/css">
+			@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700'); 
+			* { font-family: 'Montserrat', 'Helvetica Neue', sans-serif; }
+			body, html{
+			    height:100%;
+			    width:100%;
+			}
+			body, *{
+			    padding:0;
+			    border:0;
+			    margin:0;
+			}
+			*{
+			    font-size:1em;
+			    position:relative;
+			}
+			body{background:#ffffff}
+			a[href], .ahr{
+			    cursor:pointer;
+				color:#5555ff;
+			}
+			
+			/* Logo bar */
+			.logo{
+			    display:block;
+			    width:auto;
+			    top:0;
+			    left:0;
+			    height:5em;
+				box-shadow:0 0 1em 0 rgba(0,0,0,0.2);
+				position:relative;
+				z-index:1001;
+			    background:#ffffff;
+			}
+			.logo, .logo *{
+			    vertical-align:middle;
+			    color:#ffffff;
+			    overflow:hidden;
+			    text-decoration:none;
+			}
+			.logo .logo-inner{
+			    display:inline-block;
+			    height:5em;
+			    cursor:pointer;
+			    width:auto;
+			    text-decoration:none;
+			}
+			.logo .logo-icon{
+			    margin:1em;
+			    width:3em;
+			    height:3em;
+			    display:block;
+			}
+			.logo .logo-text{
+			    text-align:left;
+			    width:auto;
+			    height:4em;
+			    margin:-4.8em 0 0 5em;
+			    padding-right:1.5em;
+			    display:block;
+			}
+			.logo .logo-title{
+			    font-weight:bold;
+			    font-size:1.2em;
+			    height:2em;
+			    line-height:3em;
+			    color:#333333;
+			    display:block;
+			}
+			.logo .logo-subtitle{
+			    font-size:0.8em;
+			    height:2em;
+			    color:#757575;
+			    display:block;
+			    margin-top:0.2em
+			}
+			.logo .logo-trbt{
+			    position:absolute;
+			    display:block;
+			    z-index:101;
+			    top:1em;
+			    right:1em;
+			    width:3em;
+			    height:3em;
+			    border-radius:1.5em;
+			    line-height:3em;
+			    text-align:center;
+			}
+			.logo .logo-trbt .logo-trbt-ic{
+			    fill:#333333;
+			    height:1.5em;
+			    width:1.5em;
+			    fill:#5555ff;
+			}
+			
+			/* Page banner (header) */
+			.banner{
+				background:#5555ff;
+				text-align:center;
+				display:block;
+				overflow:hidden;
+			}
+			.banner, .banner *{
+				text-align:center;
+				margin:0;
+			}
+			.banner .banner-inner{
+				margin-top:3em;
+				display:inline-block;
+				max-width:90%;
+				position:relative;
+				z-index:5;
+			}
+			.banner .banner-title{
+				font-size:2em;
+				margin-bottom:0.4em;
+				color:white;
+			}
+			.banner .banner-subtitle{
+				font-size:1.2em;
+				margin-bottom:1em;
+				font-weight:normal;
+				color:white;
+			}
+			.banner .banner-button{
+				font-size:1.2em;
+				margin-bottom:1em;
+				line-height:2em;
+				padding-left:0.7em;
+				padding-right:0.7em;
+				font-weight:normal;
+				display:inline-block;
+				color:white;
+				border:1pt solid white;
+				border-radius:0.4em;
+				background:rgba(255,255,255,0.2);
+			    text-decoration:none;
+			}
+			.banner .banner-button:active{
+				background:rgba(255,255,255,0.5);
+			}
+			.banner .banner-bgimg{
+				height:auto;
+				bottom:0;
+				left:0;
+				width:100%;
+				display:block;
+				position:absolute;
+				text-align:center;
+				z-index:0;
+				line-height:0;
+			}
+			.banner .banner-bgimg img{
+				max-height:20em;
+				max-width:100%;
+				display:inline-block;
+				position:relative;
+			}
+			.banner .banner-noiseeffect{
+				height:100%;
+				width:100%;
+				top:0;
+				left:0;
+				display:block;
+				position:absolute;
+				z-index:1;
+				background:url(noise-black.png) rgba(0,0,0,0.5) repeat;
+			}
+			
+			/* Content */
+			.content{
+				display:block;
+				position:relative;
+				z-index:10;
+				width:100%;
+				overflow-x:hidden;
+				text-align:center;
+			}
+			.content-inner{
+				margin-top:2em;
+				margin-bottom:2em;
+				width:45em;
+				max-width:90%;
+				display:inline-block;
+				overflow-x:hidden;
+				text-align:left;
+			}
+			.content .content-inner img{
+				max-width:100%;
+			}
+			.content h2, .content h3, .content p, .content ul, .content img{
+				margin-bottom:0.5em;
+			}
+			.content h2{
+				font-size:1.5em;
+				font-weight:bold;
+				margin-top:1em;
+			}
+			.content h2:first-child{margin-top:0;}
+			.content h3{
+				font-size:1.1em;
+				font-style:italic;
+				font-weight:normal;
+			}
+			.content h3:before{
+				content:'>> ';
+				color:#cccccc;
+			}
+			.content h4{
+				font-size:1.1em;
+				margin-top:2.5em;
+				font-weight:normal;
+			}
+			.content p, .content li{
+				line-height:1.7em;
+			}
+			.content li .li-icon{
+				display:inline-block;
+				height:1.7em;
+				width:1.7em;
+				margin-top:0.5em;
+				margin-bottom:-0.5em;
+				margin-right:0.3em;
+				line-height:0;
+			}
+			.content li .li-icon.li-icon-svg{
+				fill:#333333;
+			}
+			.content code{
+				font-family:monospace;
+				padding:0.5em 1em;
+				display:block;
+				margin-bottom:1.5em;
+				background:#f3f3f3;
+			}
+			
+			/* Footer */
+			.foot{
+				position:relative;
+				display:block;
+				padding-top:2em;
+				padding-bottom:3em;
+				width:90%;
+				margin-left:5%;
+				margin-top:2em;
+				border-top:1pt solid #777777;
+				text-align:center;
+				line-height:1.7em;
+			}
+		</style>
+
+    </head>
+
+    <!-- Body -->
+    <body>
+		
+		<!-- Logo -->
+		<header class="logo">
+			<a href="https://infoein.altervista.org/" title="InfoEin home" class="logo-inner">
+				<img class="logo-icon" src="logo-circ.svg" /> 
+				<span class="logo-text">
+					<span class="logo-title">InfoEin</span>
+					<span class="logo-subtitle">A meaningless estragon</span>
+				</span>
+			</a>
+            <a href="mailto:infoein@altervista.org" title="Mail: infoein@altervista.org" class="logo-trbt">
+				<svg class="logo-trbt-ic" viewBox="0 0 48 48">
+					<path d="M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 28H8V16l16 10 16-10v20zM24 22L8 12h32L24 22z"/>
+				</svg>
+			</a>
+		</header> 
+	
+		<!-- Page banner -->
+		<header class="banner" role="banner">
+			<div class="banner-bgimg"><img src="muon-banner.svg" /></div>
+			<div class="banner-noiseeffect">&nbsp;</div>
+			<div class="banner-inner">
+				<h1 class="banner-title">Muon file manager</h1>
+				<h2 class="banner-subtitle">A powerful and lightweight open source PHP/JavaScript-based file manager for your web space.</h2>
+				<a href="https://github.com/infoein/muon" class="banner-button" title="View Muon on GitHub">View on GitHub</a>
+			</div>
+		</header>
+		
+		<!-- Main content -->
+		<main id="content" class="content" role="main">
+			<div class="content-inner">
+			
+				<h2>Manage your website from the browser</h2>
+				<h3>You don’t need to install anything to manage your web space!</h3>
+				<p>Muon works as a <strong>web-app</strong> and its simple, fast loading and responsive interface is optimized for modern browsers for desktops, tablets and smartphones.</p>
+				<p><img src="mock_mu3-3_main_plants.png" alt="Image" /></p>
+				
+				<h2>Everything you need</h2>
+				<h3>What else should a file manager do?</h3>
+				<ul>
+					<li><svg class="li-icon li-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 5v14h17V5H3zm4 2v2H5V7h2zm-2 6v-2h2v2H5zm0 2h2v2H5v-2zm13 2H9v-2h9v2zm0-4H9v-2h9v2zm0-4H9V7h9v2z"/></svg> <strong>Browse</strong> folders, display sizes, permission and tree structure.</li>
+					<li><svg class="li-icon li-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="6" cy="18" fill="none" r="2"/><circle cx="12" cy="12" fill="none" r=".5"/><circle cx="6" cy="6" fill="none" r="2"/><path d="M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3z"/></svg> <strong>Move, copy, delete, rename</strong> your files and <strong>create new ones</strong>.</li>
+					<li><svg class="li-icon li-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg> <strong>Zip/unzip</strong> archives — this requires PHP-Zip extension on your server.</li>
+					<li><svg class="li-icon li-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg> <strong>Upload</strong> multiple files, according to server’s limitations.</li>
+					<li><svg class="li-icon li-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> <strong>Built-in text editor</strong>; yeah, Muon can edit text files too! This tool is one of the most helpful to manage your site’s pages (HTML, PHP), scripts (JS) and stylesheets (CSS).</li>
+				</ul>
+				
+				<h2>All in one file</h2>
+				<h3>Just 94kB, plain PHP, HTML and JavaScript!</h3>
+				<p>Muon’s code is compressed in a single 94kB PHP page (<em>muon.php</em>) and it’s ready to work out-of-the-box. It only requires a PHP (version 5 or newer) interpreter on the server, that is included by default in the majority of web hosting plans. All settings, including login credentials, are stored at the beginning of the file, and of course hidden to visitors, <strong>thus no database is required</strong>.</p>
+				<p><code>
+					<img src="commodore-64.png" alt="Image" />
+					Actually, Muon would be too large for a Commodore 64's memory, but if you're using a newer machine you should definitely have no problems ;)
+				</code></p>
+
+				<h2>See it in action</h2>
+				<h3>Try a demo!</h3>
+				<p>A demo of the latest version is available <a href="https://infoein.altervista.org/play/muon-demo/muon3.php" title="Muon 3 demo">here</a>. You’re allowed to browse and read files, but not to modify, copy, move, rename, delete or upload stuff.</p>
+				<ul>
+					<li><strong>Demo credentials:</strong> 
+						&nbsp;
+						<svg class="li-icon li-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+						<em>admin</em>
+						&nbsp; | &nbsp;
+						<svg class="li-icon li-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg> 
+						<em>password</em>
+					</li>
+				</ul>
+
+				<h2>Get Muon now!</h2>
+				<h3>It's not just free, it's open source!</h3>
+				<p><strong>You can get muon.php</strong> (as well as the source code) <strong>from <a target="blank" href="https://github.com/infoein/muon/releases" title="Releases on GitHub">GitHub</a></strong>, read the <a target="blank" href="https://github.com/infoein/muon#readme" title="Readme on GitHub">installation notes</a> and upload it to your web space. Alternatively, you can copy <a target="blank" href="https://raw.githubusercontent.com/infoein/muon/main/muon.php" title="Latest Muon code">this code</a> to a PHP file on your server, or directly download it via wget:</p>
+				<p><code>wget "https://raw.githubusercontent.com/infoein/muon/main/muon.php"</code></p>
+				<p><img src="opensource-dogs-meme.png" alt="Image" /></p>
+				
+				<h2>Notes</h2>
+				<p>This is an open source software released under the MIT license. By downloading Muon you automatically agree with its terms and conditions, which are stated <a href="https://github.com/infoein/muon/blob/main/LICENSE" title="License con GitHub">here</a>.</p>
+			
+				<h4><strong>Muon is a proud <a href="http://europa.eu/" title="European Union">European</a> software</strong></h4>
+				
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer class="foot">
+			<strong><a href="https://github.com/infoein/muon" title="muon repository on GitHub">Muon</a>
+			is maintained by
+			<a href="https://github.com/infoein" title="infoein profile on GitHub">InfoEin</a></strong>
+			<br/>  <br/>
+			<strong>Copyright 2022 <a href="https://infoein.altervista.org/" title="InfoEin home">InfoEin</a></strong>
+			<br/>
+			<a href="https://infoein.altervista.org/" title="infoein.altervista.org">Home</a>
+			|
+			Mail: <a href="mailto:infoein@altervista.org" title="Mail: infoein@altervista.org">infoein@altervista.org</a>
+			<br/>
+			<a href="https://infoein.github.io/" title="infoein.github.io">Home on GitHub</a>
+			|
+			<a href="https://github.com/infoein" title="github.com/infoein">GitHub profile</a>
+		</footer>
+				
+
+    </body>
+</html>
