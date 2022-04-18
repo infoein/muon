@@ -45,6 +45,12 @@ Alternatively, you can copy [this code](https://raw.githubusercontent.com/infoei
 ``wget "https://raw.githubusercontent.com/infoein/muon/main/muon.php"``
 
 
+## Demo
+A demo of the latest version is available [here](https://infoein.altervista.org/play/muon-demo/muon3.php). You're allowed to browse and read files, but not to modify, copy, move, rename, delete or upload stuff.
+- Demo username: *admin*
+- Demo password: *password*
+
+
 ### Notes
 
 This is an open source software released under the MIT license. By downloading Muon you automatically agree with its terms and conditions, which are stated [here](https://raw.githubusercontent.com/infoein/muon/main/LICENSE).
