@@ -46,7 +46,7 @@ To change settings, define PHP constants at the beginning of the file this way:
 
 
 ## Source code
-Muon's source code is available in the *source-code* folder. All files located there are not required, but they're useful if you want to make your own modifications to the file manager. A PHP/HTML script - *MUON_ASSEMBLER.php* - is also provided to help you merging the whole code in a single file.
+Muon's source code is available in the *uncompressed* folder. All files located there are not required, but they're useful if you want to make your own modifications to the file manager. A PHP/HTML script - *MUON_ASSEMBLER.php* - is also provided to help you merging the whole code in a single file.
 
 
 
