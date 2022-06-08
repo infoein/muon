@@ -725,14 +725,31 @@ input:-webkit-autofill:active {
 }
 
 .tree-btn.tree-btn-close,
+.tree-btn.tree-btn-wait,
 .tree-li.tree-open .tree-btn.tree-btn-open {
     display: none
 }
 
 .tree-btn.tree-btn-open,
-.tree-li.tree-open .tree-btn.tree-btn-close {
+.tree-li.tree-open .tree-btn.tree-btn-close{
     display: inline-block
 }
+.tree-li.tree-loading .tree-btn.tree-btn-open,
+.tree-li.tree-loading.tree-open .tree-btn.tree-btn-close {
+    display: none
+}
+.tree-li.tree-loading .tree-btn.tree-btn-wait {
+    display: inline-block;
+	animation-name: flipvert;
+	animation-duration: 600ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: step-end; 
+}
+@keyframes flipvert {
+	0% { transform: scaleY(1); }
+	50% { transform: scaleY(-1); }
+}
+
 
 .tree-btn .svg-ic {
     width: 1em;

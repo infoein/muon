@@ -13,6 +13,26 @@ if(mu_guest_session)
 
 chdir($mu_wd_browse);
 
+if($request == "gettree"){
+	/*     RENAME PROCEDURE
+	 rename_err_count           
+	 rename_err_missing    
+	 rename_err_invalid_name    
+	 rename_err_already_existing
+	 rename_err                 
+	 rename_ok                  */
+	$tbrws = param("tbrws");
+	$tname = param("tname");
+	$tpath = param("tpath");
+	$tid = param("tid");
+	$recur = param("recur");
+	chdir($mu_wd_browse);
+	echo json_encode((object)["tree"=>new MuonTree($tbrws, $tname, $tpath, $tid, true),"treeId"=>$tid, "askRecur"=>$recur]);
+	chdir($mu_wd_script);
+	respDie("");
+}
+
+
 if($request == "rename"){
 	/*     RENAME PROCEDURE
 	 rename_err_count           

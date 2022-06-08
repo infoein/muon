@@ -1,6 +1,6 @@
 <?php
 
-die("Forbidden");//Uncomment if you don't need to use Muon ASSEMBLER!
+//die("Forbidden");//Uncomment if you don't need to use Muon ASSEMBLER!
 
 
 

@@ -207,6 +207,64 @@ function select_browse_rightclick(a) {
 
 // Tree
 
+var tree_next_id = 0;
+function tree_html (t, home=true){
+	tree_next_id++;
+	var c = "";
+	var tname=t.name;
+	var path = "/" + t.fullPath.trimStart("/");
+	var extra_class = "";
+	if(t.browsingThis)
+		extra_class +=" tree-browsing";
+	if(t.browsingInsideThis)
+		extra_class +=" tree-open";
+	if(!home)
+		extra_class += " tree-li-ul";
+	if(!t.countFolders)
+		extra_class += " tree-nosubfolders";
+	if(t.loaded)
+		extra_class += " tree-loaded";
+	c = c + "<li id=\"tree-li-"+tree_next_id+"\" class=\"tree-li" + extra_class + "\">";
+	if(home){
+		tname = "HOME";
+		c = c + "<div class=\"tree-btn tree-btn-noclick\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-home\" /></svg></div>";
+	}
+	else if(t.countFolders){
+		if(!t.loaded){	
+			c = c + "<div style=\"display:none\" id=\"tree-loadform-"+tree_next_id+"\">";
+			c = c + "<input type=\"hidden\" id=\"tree-in-tname-"+tree_next_id+"\" value=\""+encodeURIComponent(t.name)+"\" />";
+			c = c + "<input type=\"hidden\" id=\"tree-in-tbrws-"+tree_next_id+"\" value=\""+encodeURIComponent(t.locBrw)+"\" />";
+			c = c + "<input type=\"hidden\" id=\"tree-in-tpath-"+tree_next_id+"\" value=\""+encodeURIComponent(t.locPath)+"\" />";
+			c = c + "<input type=\"hidden\" id=\"tree-in-tid-"+tree_next_id+"\" value=\""+tree_next_id+"\" />";
+			c = c + "</div>";
+		}
+		c = c + "<a class=\"tree-btn tree-btn-open\" onclick=\"tree_open("+tree_next_id+",'open')\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-folder-full\" /></svg></a>";
+		c = c + "<a class=\"tree-btn tree-btn-wait\" title=\"Loading content...\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-hourgl-top\" /></svg></a>";
+		c = c + "<a class=\"tree-btn tree-btn-close\" onclick=\"tree_open("+tree_next_id+",'close')\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-folder-empty\" /></svg></a>";
+	}
+	else{ 
+		c = c + "<span class=\"tree-btn tree-btn-noclick\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-folder-empty\" /></svg></span> ";
+	}
+	c = c + "&nbsp;<a class=\"tree-name brw\" title=\"Browse "+tname+"\" href=\""+t.browseLink+"\">"+tname+"</a>";
+	c = c + "&nbsp;<a class=\"tree-name cpy\" title=\"Copy to "+tname+"\" onclick=\"paste_tool('." + t.fullPath + "')\"><span class=\"tree-btn paste\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-paste\" /></svg></span>&nbsp;" + tname + "</a>";
+	c = c + "&nbsp;<a class=\"tree-name cut\" title=\"Move to "+tname+"\" onclick=\"paste_tool('." + t.fullPath + "')\"><span class=\"tree-btn paste\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-paste\" /></svg></span>&nbsp;" + tname + "</a>";
+	c = c + "</li>";
+	
+	if(t.countFolders){
+		c = c + "<ul id=\"tree-ul-"+tree_next_id+"\" class=\"tree-ul" + extra_class + "\">";
+		c = c + tree_html_arr(t.folders);
+		c = c + "</ul>";
+	}
+	return c;
+}
+
+function tree_html_arr (tarr=[],as_home=false){
+	var c = "";
+	for (var j=0; j<tarr.length; j++)
+		c = c + tree_html(tarr[j],as_home);
+	return c;
+}
+
 function tree_meaning(a) {
     var c = gid("layout");
     var b = new Array("tree-browse", "tree-copy", "tree-cut");
@@ -231,15 +289,63 @@ function tree_visibility(a) {
     tree_meaning()
 }
 
-function tree_open(c, a) {
+
+function tree_load(id, recOpen="no") {
+    var liob = gid("tree-li-"+id);
+	if (liob.className.indexOf("tree-loaded")>=0) 
+		return false;
+    add_cl("tree-loading", [liob,gid("tree-ul-"+id)]);
+	request_send_gettree(
+		id,
+		decodeURIComponent(gval("tree-in-tname-"+id)),
+		decodeURIComponent(gval("tree-in-tbrws-"+id)),
+		decodeURIComponent(gval("tree-in-tpath-"+id)),
+		recOpen);
+	return true;
+}
+
+function tree_loaded(d){
+	//console.log(d);
+	var liob = gid("tree-li-"+d.treeId);
+    var ulob = gid("tree-ul-"+d.treeId);
+	ulob.innerHTML = tree_html_arr(d.tree.folders);
+	rem_cl("tree-loading", [liob,ulob]);
+	add_cl("tree-loaded", [liob,ulob]);
+	gid("tree-loadform-"+d.treeId).remove()
+	if (d.askRecur=="yes"){
+		var subl = ulob.getElementsByClassName("tree-ul");
+		for (var j=0; j<subl.length; j++)
+			tree_open(parseInt(subl[j].id.substring(8)), "open", "yes");//tree-ul-ID -> ID (skip 8 chars)
+	}
+}
+
+var tree_next_all_load = false;
+function tree_open(c, a, recOpen="no") {
     var b = new Array(gid("tree-li-" + c), gid("tree-ul-" + c));
     if (c == "all") {
-        b = document.getElementsByClassName("tree-li-ul")
-    }
-    if (a == "open") {
-        add_cl("tree-open", b)
-    } else {
-        rem_cl("tree-open", b)
+        b = document.getElementsByClassName("tree-li-ul tree-loaded");
+		if (a == "open" && tree_next_all_load==1){
+			b = document.getElementsByClassName("tree-li-ul");
+			var w = document.getElementsByClassName("tree-ul");
+			for (var j=0; j<w.length; j++)
+				if (w[j].className.indexOf("tree-loaded")<0)//tree-ul-ID -> ID (skip 8 chars)
+					tree_load(parseInt(w[j].id.substring(8)), "yes");
+			tree_next_all_load = -1;
+		}
+		else if (a == "open" && tree_next_all_load==0){
+			tree_next_all_load = 1;
+			if (document.getElementsByClassName("tree-ul tree-open").length - document.getElementsByClassName("tree-ul tree-loaded").length==0)
+				return tree_open(c, a);
+		}
+    } 
+	else
+		tree_load(c,recOpen);
+    if (a == "open")
+		add_cl("tree-open", b)
+    else {
+        rem_cl("tree-open", b);
+		if (tree_next_all_load==1)
+			tree_next_all_load = 0;
     }
 }
 
@@ -392,19 +498,38 @@ function request_send(c, b) {
     var d = new FormData(gid(b));
     var e = new XMLHttpRequest();
     d.append("req", c);
-    e.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            request_done(this.responseText)
-        }
-    };
 	
+	console.log(b);
+	e.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			request_done(this.responseText)
+		}
+	};
 	if(c == "upload")
 		e.upload.onprogress = function(e){
 			var p = Math.ceil((e.loaded / e.total) * 100);
     		gid("response-output").innerHTML = "Upload progress: <b>"+p+"%</b>";
     		arr_cl(new Array("resp-none", "resp-error", "resp-success","resp-progress"), 3, gid("layout"));
 		};
+    e.open("POST", a, true);
+    e.send(d)
+}
 
+function request_send_gettree(tid,tname,tbrws,tpath,recur="no") {
+    var a = mu_requests_to;
+    var d = new FormData();
+    var e = new XMLHttpRequest();
+    d.append("req", "gettree");
+    d.append("tid", tid);
+    d.append("tname", tname);
+    d.append("tbrws", tbrws);
+    d.append("tpath", tpath);
+    d.append("recur", recur);
+	e.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			tree_loaded(JSON.parse(this.responseText));
+		}
+	};
     e.open("POST", a, true);
     e.send(d)
 }

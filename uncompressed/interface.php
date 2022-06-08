@@ -21,6 +21,7 @@
 			var mu_session_status="<?php echo $mu_session_status;?>";
 			var mu_session_title="<?php echo $mu_session_title;?>";
 			var mu_requests_to="<?php echo mainPage();?>?feedback=plain";
+			var mu_next_tree_id=1;
 		</script>
 		
 		<!-- JS -->
@@ -135,46 +136,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 							<span class="btn" onclick="tree_open('all','close')">Close all</span>
 						</div>
 						<div class="tree-content">
-							<?php 
-							function printTree($tree,$home=true){
-								$path="/".ltrim($tree->fullPath,"/");
-								$extra_class="";
-								if($tree->browsingThis)
-									$extra_class.=" tree-browsing";
-								if($tree->browsingInsideThis)
-									$extra_class.=" tree-open";
-								if(!$home)
-									$extra_class.=" tree-li-ul";
-								echo "<li id=\"tree-li-".$tree->treeId."\" class=\"tree-li".$extra_class."\">";
-								$name=$tree->name;
-								if($home){
-									$name="HOME";
-									echo "<div class=\"tree-btn tree-btn-noclick\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-home\" /></svg></div> ";
-								}
-								else if($tree->countFolders){ ?>
-									<a class="tree-btn tree-btn-open" onclick="tree_open('<?php echo $tree->treeId;?>','open')"><svg class="svg-ic"><use xlink:href="#ic-folder-full" /></svg></a>
-									<a class="tree-btn tree-btn-close" onclick="tree_open('<?php echo $tree->treeId;?>','close')"><svg class="svg-ic"><use xlink:href="#ic-folder-empty" /></svg></a>
-							<?php 
-								}
-								else{ 
-									echo "<span class=\"tree-btn tree-btn-noclick\"><svg class=\"svg-ic\"><use xlink:href=\"#ic-folder-empty\" /></svg></span> ";
-								} ?>
-									<a class="tree-name brw" title="Browse <?php echo $name;?>" href="<?php echo browsePage($path);?>"><?php echo $name;?></a>
-									<a class="tree-name cpy" title="Copy to <?php echo $name;?>" onclick="paste_tool('.<?php echo $tree->fullPath;?>')"><span class="tree-btn paste"><svg class="svg-ic"><use xlink:href="#ic-paste" /></svg></span> <?php echo $name;?></a>
-									<a class="tree-name cut" title="Move to <?php echo $name;?>" onclick="paste_tool('.<?php echo $tree->fullPath;?>')"><span class="tree-btn paste"><svg class="svg-ic"><use xlink:href="#ic-paste" /></svg></span> <?php echo $name;?></a>
-							<?php 
-								echo "</li>";
-								if($tree->countFolders){
-									echo "<ul id=\"tree-ul-".$tree->treeId."\" class=\"tree-ul".$extra_class."\">";
-									foreach($tree->folders as $fold)
-										printTree($fold,false);
-									echo "</ul>";
-								}
-							}
-
-							chdir($mu_wd_browse);
-							printTree(new MuonTree($mu_session_data->getFolderPath()));
-							chdir($mu_wd_script); ?>
+							<script>
+								document.write(tree_html(<?php 
+								chdir($mu_wd_browse);
+								echo json_encode(new MuonTree($mu_session_data->getFolderPath()));
+								chdir($mu_wd_script);
+								?>));
+							</script>
 						</div>
 					</div>
 				</div>
@@ -209,7 +177,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 							<?php if(muonInterface("edit"))echo "Editing: ";else echo "Browsing: ";echo "<b>";if($mu_session_data->name!=".")echo $mu_session_data->name;else echo "/";echo "</b>";?>
 							<a class="openlink" title="Open" href="<?php echo $mu_wd_relative_prefix;?>.<?php echo $mu_session_data->getFullPath();?>" target="_blank">[OPEN]</a>
 							&mdash;
-							<b><?php echo $mu_session_data->sizeWithOM();?>B</b> <span class="perms">P:<?php echo $mu_session_data->perms;?></span>
+							<?php 
+							if ($mu_session_data->countFiles + $mu_session_data->countFolders == 0)
+								echo "Empty folder";
+							else{
+								if ($mu_session_data->countFiles == 0)
+									echo "No files";
+								else if ($mu_session_data->countFiles == 1)
+									echo "One file";
+								else 
+									echo ($mu_session_data->countFiles)." files";
+								echo " and ";
+								if ($mu_session_data->countFolders == 0)
+									echo "no subfolders";
+								else if ($mu_session_data->countFolders == 1)
+									echo "one subfolder";
+								else 
+									echo ($mu_session_data->countFolders)." subfolders";
+							}
+							?> 
+							<span class="perms">P:<?php echo $mu_session_data->perms;?></span>
 						</span>
 					</div>
 				</div>
@@ -537,7 +524,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 										<td class="sep-mid">&nbsp;</td>
 										<td class="data">
 											<span class="data-cnt" oncontextmenu="event.stopPropagation()">
-												<span class="size"><?php echo $f->sizeWithOM();?>B</span>
+												<span class="size"><?php echo $f->sizeWithUnit();?></span>
 												<span class="perms">Perms:&nbsp;<?php echo $f->perms;?></span>
 											</span>
 										</td>

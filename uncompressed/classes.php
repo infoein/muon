@@ -9,9 +9,11 @@ class MuonFile {
 	public $size;
 	public $path;
 	public $browseId;
+	public $isDir;
     function __construct($name,$path,$browseId=false,$getSize=true){
 		$this->name=$name;
 		$this->size=0;
+		$this->isDir=is_dir($path.$name);
 		$permissions=fileperms($path.$name);
 		$permissions=sprintf("%o",$permissions);
 		$this->perms=substr($permissions,-4); 
@@ -22,17 +24,20 @@ class MuonFile {
 	}
 	function getFileSize($sub=""){
 		$path=$this->getFullPath(false).$sub;
-		if(!is_dir($path))
-			return filesize($path);
-		$size=0;
+		if($this->isDir)
+			return 0;
+		return filesize($path);
+		/*$size=0;
 		foreach(scandir($path) as $item)
 			if($item!="." && $item!="..")
 				$size+=$this->getFileSize($sub."/".$item);
-		return $size;
+		return $size;*/
 	}
-	function sizeWithOM(){ //4096 will be 4k
+	function sizeWithUnit(){ //4096 will be 4k
+		if ($this->isDir)
+			return "";
 		$fileSize=$this->size;
-		$byteOMs=array("","k","M","G","T");
+		$byteOMs=array("B","kB","MB","GB","TB");
 		for($i=0;$fileSize>=1024 && $i<count($byteOMs)-1;$i++)
 			$fileSize/=1024;
 		$fileSize=round($fileSize,2)." ".$byteOMs[$i];
@@ -97,7 +102,7 @@ class MuonBrowse extends MuonFile {
 			if($item!="." && $item!=".."){
 				if(is_dir($fullPath.$item)){
 					$this->folders[$this->countFolders]=new MuonFile($item,$fullPath,$this->countFolders);
-					$this->size+=$this->folders[$this->countFolders]->size;
+					//$this->size+=$this->folders[$this->countFolders]->size;
 					$this->countFolders++;
 				}
 				else{
@@ -115,14 +120,21 @@ class MuonBrowse extends MuonFile {
 // Folders tree
 class MuonTree {
 	public $name;
+	public $locBrw;
+	public $locPath;
 	public $fullPath;
 	public $browsingThis;
 	public $browsingInsideThis;
+	public $browseLink;
 	public $countFolders;
 	public $folders;
 	public $treeId;
-	function __construct($browsing=false,$name=".",$path="",$treeId=1){
+	public $loaded;
+	function __construct($browsing=false,$name=".",$path="",$treeId=0,$force=false,$force_recursive=false){
 		$this->name=$name;
+		$this->treeId=$treeId;
+		$this->locBrw=$browsing;
+		$this->locPath=$path;
 		$this->browsingThis=false;
 		$this->browsingInsideThis=false;
 		if(!empty($path))
@@ -132,16 +144,27 @@ class MuonTree {
 			$this->browsingThis=true;
 		if(substr($browsing,0,strlen($this->fullPath))===$this->fullPath)
 			$this->browsingInsideThis=true;
+		$this->browseLink = browsePage("/".ltrim($this->fullPath,"/"));
 		$this->folders=[]; 
 		$this->countFolders=0;
 		$folders=scandir(".".$this->fullPath);
-		foreach($folders as $item)
-			if($item!="." && $item!=".." && is_dir(".".$this->fullPath."/".$item)){
-				$this->folders[$this->countFolders]=new MuonTree($browsing,$item,".".$this->fullPath,$treeId);
-				$treeId=$this->folders[$this->countFolders]->treeId + 1;
-				$this->countFolders++;
-			}
-		$this->treeId=$treeId;
+		$this->loaded=true;
+		if ($this->browsingInsideThis || $force){
+			foreach($folders as $item)
+				if($item!="." && $item!=".." && is_dir(".".$this->fullPath."/".$item)){
+					$this->folders[$this->countFolders]=new MuonTree($browsing,$item,".".$this->fullPath,0,$force_recursive,$force_recursive);
+					$this->countFolders++;
+				}
+		}
+		else{
+			$this->countFolders = 0;
+			foreach($folders as $item)
+				if($item!="." && $item!=".." && is_dir(".".$this->fullPath."/".$item)){
+					$this->countFolders ++;
+					$this->loaded=false;
+					break;
+				}
+		}
 	}
 }
 

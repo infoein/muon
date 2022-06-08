@@ -1,7 +1,7 @@
 <?php  /* Begin of Muon back-end code */
 
 // Default settings
-define( "mu_version", "3.3" );
+define( "mu_version", "3.4" );
 define( "mu_website", "https://infoein.github.io/muon/" );
 if(!defined("mu_title"))
     define( "mu_title", "Muon" );
@@ -52,13 +52,13 @@ if(isset($_POST["login"])&&isset($_POST["pass"])){
 	redirAndDie("login=error".getPrevQuery("_get","&"));
 }
 
+// Include classes
+require "classes.php";
+
 // Handle requests
 if(param("req")){
 	require "requests.php";
 }
-
-// Include classes
-require "classes.php";
 
 // Identify status
 if(isset($_GET["license"])){ //Display license
