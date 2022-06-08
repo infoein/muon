@@ -7,7 +7,7 @@ Home page and demo: [Muon on GitHub Pages](https://infoein.github.io/muon/)
 
 ## Features
 - *You don't need to install any boring app to manage your web space*: Muon works as a web-app and its simple, fast loading and responsive interface is optimized for modern browsers for desktops, tablets and smartphones;
-- *A stand-alone 94kB file*: Muon's code is compressed in a single 94kB page and it's ready to work out-of-the-box. No external resources are used (not even fonts or pictures);
+- *A stand-alone 100kB file*: Muon's code is compressed in a single <100kB page and it's ready to work out-of-the-box. No external resources are used (not even fonts or pictures);
 - *No database required*: Muon allows a single user access, so a database would be a useless waste of resources. All settings are stored at the beginning of the file, and (of course) hidden to visitors;
 - Fully open source - released under the MIT License.
 
@@ -46,7 +46,7 @@ To change settings, define PHP constants at the beginning of the file this way:
 
 
 ## Source code
-Muon's source code is available in the *uncompressed* folder. All files located there are not required, but they're useful if you want to make your own modifications to the file manager. A PHP/HTML script - *MUON_ASSEMBLER.php* - is also provided to help you merging the whole code in a single file.
+Muon's source code is available on GitHub. All files located there are not required, but they're useful if you want to make your own modifications to the file manager. A PHP/HTML script - *MUON_ASSEMBLER.php* - is also provided to help you merging the whole code in a single file.
 
 
 
