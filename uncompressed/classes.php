@@ -130,7 +130,7 @@ class MuonTree {
 	public $folders;
 	public $treeId;
 	public $loaded;
-	function __construct($browsing=false,$name=".",$path="",$treeId=0,$force=false,$force_recursive=false){
+	function __construct($browsing=false,$name=".",$path="",$treeId=0,$force=true,$force_recursive=false){
 		$this->name=$name;
 		$this->treeId=$treeId;
 		$this->locBrw=$browsing;
